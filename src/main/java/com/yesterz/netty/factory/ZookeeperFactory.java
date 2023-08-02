@@ -14,6 +14,7 @@ public class ZookeeperFactory {
             client = CuratorFrameworkFactory.newClient("localhost:2181", retryPolicy);
             client.start();
         }
+//        System.out.println(client.getNamespace());
         return client;
     }
 

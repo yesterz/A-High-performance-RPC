@@ -2,6 +2,7 @@ package com.yesterz.netty.server;
 
 import com.yesterz.netty.constant.Constants;
 import com.yesterz.netty.factory.ZookeeperFactory;
+import com.yesterz.netty.handler.SimpleServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -40,11 +41,16 @@ public class NettyServer {
                             ch.pipeline().addLast(new StringEncoder());
                         }
                     });
-            ChannelFuture future = bootstrap.bind(6668).sync();
+            ChannelFuture future = bootstrap.bind(8080).sync();
             CuratorFramework client = ZookeeperFactory.create();
             InetAddress inetAddress = InetAddress.getLocalHost();
+//            InetAddress inetAddress = InetAddress.getByName("127.0.0.1");
 //            client.create().forPath(Constants.SERVER_PATH);
-            client.create().withMode(CreateMode.EPHEMERAL).forPath(Constants.SERVER_PATH + inetAddress.getHostAddress());
+            System.out.println(inetAddress.getHostAddress());
+            client.create()
+                    .creatingParentsIfNeeded()
+                    .withMode(CreateMode.EPHEMERAL)
+                    .forPath(Constants.SERVER_PATH + inetAddress.getHostAddress());
             future.channel().closeFuture().sync();
         } catch (Exception e) {
             e.printStackTrace();
