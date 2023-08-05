@@ -15,24 +15,28 @@
         <zookeeper.version>3.4.6</zookeeper.version>
     </properties>
     <dependencies>
+
         <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
             <version>4.1.95.Final</version>
         </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.apache.curator/curator-framework -->
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-framework</artifactId>
             <version>2.4.2</version>
         </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.apache.curator/curator-recipes -->
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-recipes</artifactId>
             <version>2.4.2</version>
         </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.apache.zookeeper/zookeeper -->
         <dependency>
             <groupId>org.apache.zookeeper</groupId>
@@ -46,6 +50,20 @@
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
             <version>2.4</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.alibaba/fastJson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastJson</artifactId>
+            <version>1.2.23</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13</version>
+            <scope>test</scope>
         </dependency>
 
 

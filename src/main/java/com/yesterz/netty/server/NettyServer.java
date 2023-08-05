@@ -15,10 +15,12 @@ import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.Delimiters;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import io.netty.handler.timeout.IdleStateHandler;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.zookeeper.CreateMode;
 
 import java.net.InetAddress;
+import java.util.concurrent.TimeUnit;
 
 public class NettyServer {
     public static void main(String[] args) {
@@ -37,20 +39,21 @@ public class NettyServer {
                         public void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline().addLast(new DelimiterBasedFrameDecoder(65535, Delimiters.lineDelimiter()[0]));
                             ch.pipeline().addLast(new StringDecoder());
+                            ch.pipeline().addLast(new IdleStateHandler(6, 4,2, TimeUnit.SECONDS));
                             ch.pipeline().addLast(new SimpleServerHandler());
                             ch.pipeline().addLast(new StringEncoder());
                         }
                     });
             ChannelFuture future = bootstrap.bind(8080).sync();
             CuratorFramework client = ZookeeperFactory.create();
-            InetAddress inetAddress = InetAddress.getLocalHost();
-//            InetAddress inetAddress = InetAddress.getByName("127.0.0.1");
+//            InetAddress inetAddress = InetAddress.getLocalHost();
+            InetAddress inetAddress = InetAddress.getByName("127.0.0.1");
 //            client.create().forPath(Constants.SERVER_PATH);
             System.out.println(inetAddress.getHostAddress());
             client.create()
-                    .creatingParentsIfNeeded()
-                    .withMode(CreateMode.EPHEMERAL)
-                    .forPath(Constants.SERVER_PATH + inetAddress.getHostAddress());
+                  .creatingParentsIfNeeded()
+                  .withMode(CreateMode.EPHEMERAL)
+                  .forPath(Constants.SERVER_PATH + inetAddress.getHostAddress());
             future.channel().closeFuture().sync();
         } catch (Exception e) {
             e.printStackTrace();
