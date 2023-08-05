@@ -6,6 +6,7 @@ public class ServerRequest {
     private Object content;
 
     public Long getId() {
+
         return id;
     }
 
