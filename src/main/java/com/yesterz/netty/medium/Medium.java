@@ -14,16 +14,16 @@ public class Medium {
         beanMap = new HashMap<String, BeanMethod>();
     }
 
-    private static Medium m = null;
+    private static Medium medium = null;
     private Medium() {
 
     }
 
     public static Medium newInstance() {
-        if (m == null) {
-            m = new Medium();
+        if (medium == null) {
+            medium = new Medium();
         }
-        return m;
+        return medium;
     }
 
     // 非常关键的方法a，这里用反射处理业务
@@ -32,6 +32,7 @@ public class Medium {
         Response result = null;
 
         try {
+            // command是key
             String command = serverRequest.getCommand();
             BeanMethod beanMethod = beanMap.get(command);
             if (beanMethod == null) {
@@ -39,16 +40,20 @@ public class Medium {
             }
 
             Object bean = beanMethod.getBean();
-            Method m = beanMethod.getMethod();
-            Class paramType = m.getParameterTypes()[0];
+            Method method = beanMethod.getMethod();
+            // 先只实现一个参数
+            Class paramType = method.getParameterTypes()[0];
+            System.out.println("paramType " + paramType);
             Object content = serverRequest.getContent();
+            System.out.println("serverRequest.getContent() " + content.toString());
 
             // 先假设参数是一个简单的bean
             Object args = JSONObject.parseObject(JSONObject.toJSONString(content), paramType);
 
-
-            result = (Response) m.invoke(bean, args);
-            result.setId(result.getId());
+            result = (Response) method.invoke(bean, args);
+            System.out.println("result.getResult() " + result.getResult());
+            System.out.println("Medium.java's result.getId() " + result.getId());
+            result.setId(serverRequest.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }

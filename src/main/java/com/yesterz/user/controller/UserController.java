@@ -19,13 +19,14 @@ public class UserController {
 
         userService.save(user);
 
-        return ResponseUtil.createSuccessResult();
+
+        return ResponseUtil.createSuccessResult(user);
     }
 
-    public Response saveUsers(List<User> users) {
+    public Response saveUsers(List<User> userList) {
 
-        userService.saveList(users);
+        userService.saveList(userList);
 
-        return ResponseUtil.createSuccessResult();
+        return ResponseUtil.createSuccessResult(userList);
     }
 }

@@ -7,6 +7,13 @@ public class ResponseUtil {
         return new Response();
     }
 
+    public static Response createSuccessResult(Object content) {
+        Response response = new Response();
+        response.setResult(content);
+
+        return response;
+    }
+
     public static Response createFailResult(String code, String msg) {
         Response response = new Response();
         response.setCode(code);
@@ -15,10 +22,4 @@ public class ResponseUtil {
         return response;
     }
 
-    public static Response createSuccessResult(Object content) {
-        Response response = new Response();
-        response.setResult(content);
-
-        return response;
-    }
 }

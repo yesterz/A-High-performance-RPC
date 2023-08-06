@@ -23,11 +23,15 @@ public class DefaultFuture {
     }
 
     public static void receive(Response response) {
+
+        System.out.println("Received response with ID: " + response.getId());
+
         DefaultFuture defaultFuture = allDefautlFuture.get(response.getId());
         if (defaultFuture != null) {
             Lock lock = defaultFuture.lock;
             lock.lock();
             try {
+                System.out.println("Found corresponding DefaultFuture");
                 defaultFuture.setResponse(response);
                 defaultFuture.condition.signal();
             } catch (Exception e) {
@@ -35,6 +39,8 @@ public class DefaultFuture {
             } finally {
                 lock.unlock();
             }
+        } else {
+            System.out.println("No corresponding DefaultFuture found");
         }
 
     }
@@ -51,6 +57,7 @@ public class DefaultFuture {
             lock.unlock();
         }
 
+        System.out.println(response.getResult());
         return this.response;
     }
 
