@@ -2,6 +2,7 @@ package com.yesterz.netty.client;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yesterz.netty.handler.SimpleClientHandler;
+import com.yesterz.netty.util.Response;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;

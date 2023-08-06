@@ -1,7 +1,7 @@
 package com.yesterz.netty.handler;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yesterz.netty.client.Response;
+import com.yesterz.netty.util.Response;
 import com.yesterz.netty.handler.param.ServerRequest;
 import com.yesterz.netty.medium.Medium;
 import io.netty.channel.ChannelHandlerContext;
@@ -16,16 +16,19 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 //         ctx.flush();
 //        ctx.channel().close();
         ServerRequest serverRequest = JSONObject.parseObject(msg.toString(), ServerRequest.class);
+        System.out.println(serverRequest.getCommand());
 
         // 交给medium去处理
         Medium medium = Medium.newInstance();
-        Object resulr = medium.process(serverRequest);
+        Response response = medium.process(serverRequest);
 
-        Response resp = new Response();
-        resp.setId(serverRequest.getId());
-        System.out.println("收到消息 " + msg);
-        resp.setResult("is OK from SimpleServerHandler.java");
-        ctx.channel().writeAndFlush(JSONObject.toJSONString(resp));
+//        更新了返回结果为Response对象就不用这些了
+//        Response resp = new Response();
+//        resp.setId(serverRequest.getId());
+        System.out.println("Received msg is " + msg);
+//        resp.setResult("is OK from " + this.getClass().getName());
+
+        ctx.channel().writeAndFlush(JSONObject.toJSONString(response));
         ctx.channel().writeAndFlush("\r\n");
     }
 

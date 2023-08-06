@@ -2,6 +2,7 @@ package com.yesterz.netty.medium;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yesterz.netty.handler.param.ServerRequest;
+import com.yesterz.netty.util.Response;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -26,9 +27,9 @@ public class Medium {
     }
 
     // 非常关键的方法a，这里用反射处理业务
-    public Object process(ServerRequest serverRequest) {
+    public Response process(ServerRequest serverRequest) {
 
-        Object result = null;
+        Response result = null;
 
         try {
             String command = serverRequest.getCommand();
@@ -46,7 +47,8 @@ public class Medium {
             Object args = JSONObject.parseObject(JSONObject.toJSONString(content), paramType);
 
 
-            result = m.invoke(bean, args);
+            result = (Response) m.invoke(bean, args);
+            result.setId(result.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }

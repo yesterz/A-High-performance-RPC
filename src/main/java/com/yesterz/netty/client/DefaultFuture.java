@@ -1,5 +1,7 @@
 package com.yesterz.netty.client;
 
+import com.yesterz.netty.util.Response;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;

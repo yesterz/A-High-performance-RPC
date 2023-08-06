@@ -2,7 +2,7 @@ package com.yesterz.netty.handler;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yesterz.netty.client.DefaultFuture;
-import com.yesterz.netty.client.Response;
+import com.yesterz.netty.util.Response;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
