@@ -1,4 +1,4 @@
-package com.yesterz.netty.server;
+package com.yesterz.netty.init;
 
 import com.yesterz.netty.constant.Constants;
 import com.yesterz.netty.factory.ZookeeperFactory;
@@ -18,12 +18,16 @@ import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.zookeeper.CreateMode;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.stereotype.Component;
 
 import java.net.InetAddress;
 import java.util.concurrent.TimeUnit;
 
-public class NettyServer {
-    public static void main(String[] args) {
+@Component
+public class NettyInitial implements ApplicationListener<ContextRefreshedEvent> {
+    public static void start() {
         EventLoopGroup parentGroup = new NioEventLoopGroup();
         EventLoopGroup childGroup = new NioEventLoopGroup();
 
@@ -60,5 +64,10 @@ public class NettyServer {
             childGroup.shutdownGracefully();
         }
 
+    }
+
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+        this.start();
     }
 }

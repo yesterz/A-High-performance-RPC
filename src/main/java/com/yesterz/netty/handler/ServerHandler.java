@@ -3,18 +3,23 @@ package com.yesterz.netty.handler;
 import com.alibaba.fastjson.JSONObject;
 import com.yesterz.netty.client.Response;
 import com.yesterz.netty.handler.param.ServerRequest;
+import com.yesterz.netty.medium.Medium;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 
-public class SimpleServerHandler extends ChannelInboundHandlerAdapter {
+public class ServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 //        ctx.channel().writeAndFlush("It's ok\r\n");
 //         ctx.flush();
 //        ctx.channel().close();
         ServerRequest serverRequest = JSONObject.parseObject(msg.toString(), ServerRequest.class);
+
+        // 交给medium去处理
+        Medium medium = Medium.newInstance();
+        Object resulr = medium.process(serverRequest);
 
         Response resp = new Response();
         resp.setId(serverRequest.getId());

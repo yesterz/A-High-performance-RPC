@@ -24,6 +24,7 @@ public class DefaultFuture {
         DefaultFuture defaultFuture = allDefautlFuture.get(response.getId());
         if (defaultFuture != null) {
             Lock lock = defaultFuture.lock;
+            lock.lock();
             try {
                 defaultFuture.setResponse(response);
                 defaultFuture.condition.signal();
