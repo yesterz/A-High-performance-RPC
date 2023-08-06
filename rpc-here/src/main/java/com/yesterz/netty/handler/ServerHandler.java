@@ -12,7 +12,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 
         ServerRequest request = JSONObject.parseObject(msg.toString(), ServerRequest.class);
-        System.out.println(request.getCommand());
+        System.out.println("request.getCommand() " + request.getCommand());
 
         // 交给medium去处理
         Medium medium = Medium.newInstance();

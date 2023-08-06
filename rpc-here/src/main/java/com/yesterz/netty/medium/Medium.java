@@ -52,8 +52,8 @@ public class Medium {
 
             result = (Response) method.invoke(bean, args);
             System.out.println("result.getResult() " + result.getResult());
-            System.out.println("Medium.java's result.getId() " + result.getId());
             result.setId(serverRequest.getId());
+            System.out.println("Medium.java's result.getId() " + result.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }

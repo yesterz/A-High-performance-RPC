@@ -1,4 +1,6 @@
+import com.alibaba.fastjson.JSONObject;
 import com.yesterz.client.annotation.RemoteInvoke;
+import com.yesterz.client.param.Response;
 import com.yesterz.user.bean.User;
 import com.yesterz.user.remote.UserRemote;
 import org.junit.Test;
@@ -23,7 +25,8 @@ public class TestRemoteInvoke {
         User old6 = new User();
         old6.setId(6);
         old6.setName("1个老6");
-        userRemote.saveUser(old6);
+        Response response = userRemote.saveUser(old6);
+        System.out.println(JSONObject.toJSONString(response));
     }
 
     @Test
