@@ -55,8 +55,8 @@ public class NettyInitial implements ApplicationListener<ContextRefreshedEvent> 
             System.out.println(inetAddress.getHostAddress());
             client.create()
                   .creatingParentsIfNeeded()
-                  .withMode(CreateMode.EPHEMERAL)
-                  .forPath(Constants.SERVER_PATH + inetAddress.getHostAddress());
+                  .withMode(CreateMode.EPHEMERAL_SEQUENTIAL)
+                  .forPath(Constants.SERVER_PATH + "/" + inetAddress.getHostAddress() + "#");
             future.channel().closeFuture().sync();
         } catch (Exception e) {
             e.printStackTrace();

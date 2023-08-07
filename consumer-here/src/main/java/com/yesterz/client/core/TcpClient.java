@@ -1,9 +1,11 @@
 package com.yesterz.client.core;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yesterz.client.constant.Constants;
 import com.yesterz.client.handler.SimpleClientHandler;
 import com.yesterz.client.param.ClientRequest;
 import com.yesterz.client.param.Response;
+import com.yesterz.client.zookeeper.ZookeeperFactory;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -14,10 +16,17 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.api.CuratorWatcher;
+import org.apache.zookeeper.Watcher;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class TcpClient {
+
+    static Set<String> realServerPath = new HashSet<String>();
 
     static final Bootstrap b = new Bootstrap();
     static ChannelFuture f = null;
@@ -37,8 +46,26 @@ public class TcpClient {
             }
         });
 
+        CuratorFramework client = ZookeeperFactory.create();
         String host = "localhost";
         int port = 8080;
+        try {
+            List<String> serverParths = client.getChildren().forPath(Constants.SERVER_PATH);
+
+            // 加上zookeeper监听服务器的变化
+            CuratorWatcher watcher = new ServerWatcher();
+            client.getChildren().usingWatcher(watcher).forPath(Constants.SERVER_PATH);
+
+            for (String serverPath : serverParths) {
+                realServerPath.add(serverPath.split("#")[0]);
+            }
+            if (realServerPath.size() > 0) {
+                host = realServerPath.toArray()[0].toString();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
         try {
             f = b.connect(host, port).sync();
         } catch (InterruptedException e) {
