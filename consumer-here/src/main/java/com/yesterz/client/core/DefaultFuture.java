@@ -48,6 +48,22 @@ public class DefaultFuture {
         }
 
     }
+
+    public Response get(){
+        lock.lock();
+        try {
+            while(!done()){
+                condition.await();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            lock.unlock();
+        }
+
+        return this.response;
+    }
+
     // 主线程获取数据，首先要等待结果，
     public Response get(long time) {
         lock.lock();

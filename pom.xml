@@ -13,6 +13,7 @@
         <module>consumer-here</module>
         <module>user-api</module>
         <module>user-core</module>
+        <module>basic-invoke</module>
     </modules>
 
     <properties>

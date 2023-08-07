@@ -18,7 +18,6 @@ public class UserRemoteImpl implements UserRemote {
 
         userService.save(user);
 
-
         return ResponseUtil.createSuccessResult(user);
     }
 
