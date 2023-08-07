@@ -11,6 +11,8 @@
     <modules>
         <module>rpc-here</module>
         <module>consumer-here</module>
+        <module>user-api</module>
+        <module>user-core</module>
     </modules>
 
     <properties>

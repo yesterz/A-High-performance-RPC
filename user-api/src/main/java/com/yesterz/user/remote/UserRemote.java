@@ -1,7 +1,7 @@
 package com.yesterz.user.remote;
 
-import com.yesterz.netty.util.Response;
-import com.yesterz.user.bean.User;
+
+import com.yesterz.user.model.User;
 
 import java.util.List;
 

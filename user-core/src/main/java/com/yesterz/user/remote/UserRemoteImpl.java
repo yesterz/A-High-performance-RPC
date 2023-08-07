@@ -1,9 +1,8 @@
 package com.yesterz.user.remote;
 
 import com.yesterz.netty.annotation.Remote;
-import com.yesterz.netty.util.Response;
 import com.yesterz.netty.util.ResponseUtil;
-import com.yesterz.user.bean.User;
+import com.yesterz.user.model.User;
 import com.yesterz.user.service.UserService;
 
 import javax.annotation.Resource;
@@ -15,7 +14,7 @@ public class UserRemoteImpl implements UserRemote {
     @Resource
     private UserService userService;
 
-    public Response saveUser(User user) {
+    public Object saveUser(User user) {
 
         userService.save(user);
 
@@ -23,10 +22,10 @@ public class UserRemoteImpl implements UserRemote {
         return ResponseUtil.createSuccessResult(user);
     }
 
-    public Response saveUsers(List<User> userList) {
+    public Object saveUsers(List<User> users) {
 
-        userService.saveList(userList);
+        userService.saveList(users);
 
-        return ResponseUtil.createSuccessResult(userList);
+        return ResponseUtil.createSuccessResult(users);
     }
 }
