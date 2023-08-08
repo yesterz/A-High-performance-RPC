@@ -1,9 +1,14 @@
 # Introduction
 学习Netty后做的一个基于Netty、Zookeeper、Spring的轻量级RPC框架。
+实现了一个简单的服务器rpc-here/netty/server/NettyServer.java
+客户端rpc-here/netty/client/NettyClient.java
+分了好几个模块
+第一个模块是`rpc-here`，就是我们要构建的RPC，用刚学的Netty来构建。
+第二个模块
 
 1. 采用Netty来实现简单服务器
 2. Netty Client 和服务器进行通信
-3. 用Netty构建RPC服务器（加上自己的简单通信协议）
+3. 用Netty构建RPC服务器（我们的通信服务器）（加上自己的简单通信协议）
 4. Netty Client 长连接与RPC服务器通信
 5. 加上动态代理 Spring Cglib
 6. 然后需要把业务模块与通信底层模块分离
