@@ -39,7 +39,7 @@ public class NettyInitial implements ApplicationListener<ContextRefreshedEvent> 
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
-                        public void initChannel(SocketChannel ch) throws Exception {
+                        public void initChannel(SocketChannel ch) {
                             ch.pipeline().addLast(new DelimiterBasedFrameDecoder(65535, Delimiters.lineDelimiter()[0]));
                             ch.pipeline().addLast(new StringDecoder());
                             ch.pipeline().addLast(new IdleStateHandler(6, 4,2, TimeUnit.SECONDS));
@@ -47,7 +47,9 @@ public class NettyInitial implements ApplicationListener<ContextRefreshedEvent> 
                             ch.pipeline().addLast(new StringEncoder());
                         }
                     });
+
             int port = 8080;
+            int weight = 2;
             ChannelFuture future = bootstrap.bind(8080).sync();
             CuratorFramework client = ZookeeperFactory.create();
 //            InetAddress inetAddress = InetAddress.getLocalHost();
@@ -57,7 +59,7 @@ public class NettyInitial implements ApplicationListener<ContextRefreshedEvent> 
             client.create()
                   .creatingParentsIfNeeded()
                   .withMode(CreateMode.EPHEMERAL_SEQUENTIAL)
-                  .forPath(Constants.SERVER_PATH + "/" + inetAddress.getHostAddress() + "#" + port + "#");
+                  .forPath(Constants.SERVER_PATH + "/" + inetAddress.getHostAddress() + "#" + port + "#" + weight + "#");
             future.channel().closeFuture().sync();
         } catch (Exception e) {
             e.printStackTrace();
