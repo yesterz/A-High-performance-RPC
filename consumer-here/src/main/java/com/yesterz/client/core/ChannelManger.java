@@ -2,10 +2,6 @@ package com.yesterz.client.core;
 
 import io.netty.channel.ChannelFuture;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
