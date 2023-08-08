@@ -47,6 +47,7 @@ public class NettyInitial implements ApplicationListener<ContextRefreshedEvent> 
                             ch.pipeline().addLast(new StringEncoder());
                         }
                     });
+            int port = 8080;
             ChannelFuture future = bootstrap.bind(8080).sync();
             CuratorFramework client = ZookeeperFactory.create();
 //            InetAddress inetAddress = InetAddress.getLocalHost();
@@ -56,7 +57,7 @@ public class NettyInitial implements ApplicationListener<ContextRefreshedEvent> 
             client.create()
                   .creatingParentsIfNeeded()
                   .withMode(CreateMode.EPHEMERAL_SEQUENTIAL)
-                  .forPath(Constants.SERVER_PATH + "/" + inetAddress.getHostAddress() + "#");
+                  .forPath(Constants.SERVER_PATH + "/" + inetAddress.getHostAddress() + "#" + port + "#");
             future.channel().closeFuture().sync();
         } catch (Exception e) {
             e.printStackTrace();
