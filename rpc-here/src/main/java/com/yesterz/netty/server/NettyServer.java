@@ -43,7 +43,9 @@ public class NettyServer {
                             ch.pipeline().addLast(new StringEncoder());
                         }
                     });
-            ChannelFuture future = bootstrap.bind(8080).sync();
+            int port = 8081;
+            int weight = 1;
+            ChannelFuture future = bootstrap.bind(port).sync();
             CuratorFramework client = ZookeeperFactory.create();
 //            InetAddress inetAddress = InetAddress.getLocalHost();
             InetAddress inetAddress = InetAddress.getByName("127.0.0.1");
@@ -51,8 +53,8 @@ public class NettyServer {
             System.out.println(inetAddress.getHostAddress());
             client.create()
                   .creatingParentsIfNeeded()
-                  .withMode(CreateMode.EPHEMERAL)
-                  .forPath(Constants.SERVER_PATH + inetAddress.getHostAddress());
+                  .withMode(CreateMode.EPHEMERAL_SEQUENTIAL)
+                  .forPath(Constants.SERVER_PATH + "/" + inetAddress.getHostAddress() + "#" + port + "#" + weight + "#");
             future.channel().closeFuture().sync();
         } catch (Exception e) {
             e.printStackTrace();

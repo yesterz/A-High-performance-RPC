@@ -12,7 +12,7 @@ public class SimpleClientHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if ("ping".equals(msg.toString())) {
             ctx.channel().writeAndFlush("pong\r\n");
-            return ;
+            return;
         }
 //        System.out.println(msg.toString());
 //        ctx.channel().attr(AttributeKey.valueOf("ssssss")).set(msg);
@@ -21,6 +21,7 @@ public class SimpleClientHandler extends ChannelInboundHandlerAdapter {
         Response response = JSONObject.parseObject(msg.toString(), Response.class);
         // 通过response的ID可以在map中找到对应的Request,并为相应的request设置response,使得调用get()客户端得到结果
         System.out.println("SimpleClientHandler.java's response.getResult() " + response.getResult());
+        System.out.println("我是客户端，我接收服务器返回数据，" + JSONObject.toJSONString(response));
         DefaultFuture.receive(response);
 //        ctx.channel().close();
     }

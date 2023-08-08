@@ -24,9 +24,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class TcpClient {
 
-    static Set<String> realServerPath = new HashSet<String>();
+public class TcpClient {
 
     static final Bootstrap b = new Bootstrap();
     static ChannelFuture f = null;
@@ -58,13 +57,19 @@ public class TcpClient {
 
             for (String serverPath : serverParths) {
                 String[] str = serverPath.split("#");
-                realServerPath.add(str[0] + "#" +  str[1]);
-
-                ChannelFuture channelFuture = TcpClient.b.connect(str[0], Integer.valueOf(str[1]));
-                ChannelManger.add(channelFuture);
+                int weight = Integer.valueOf(str[2]);
+                if (weight > 0) {
+                    for (int w = 0; w <= weight; w++) {
+                        ChannelManger.realServerPath.add(str[0] + "#" + str[1]);
+                        ChannelFuture channelFuture = TcpClient.b.connect(str[0], Integer.valueOf(str[1]));
+                        ChannelManger.add(channelFuture);
+                    }
+                }
             }
-            if (realServerPath.size() > 0) {
-                String[] hostAndPort = realServerPath.toArray()[0].toString().split("#");
+
+
+            if (ChannelManger.realServerPath.size() > 0) {
+                String[] hostAndPort = ChannelManger.realServerPath.toArray()[0].toString().split("#");
                 host = hostAndPort[0];
                 port = Integer.valueOf(hostAndPort[1]);
 
@@ -72,32 +77,20 @@ public class TcpClient {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-//        try {
-////            f = b.connect(host, port).sync();
-//
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-
     }
-
-    static int i = 0;
-
-
-
 
     // 注意：1点每一个请求都是同一个连接，并发问题
     // 发送数据
     // Request 1、唯一请求id 2、请求内容
     // Response 1、响应唯一识别id 2、响应结果
     public static Response send(ClientRequest request) {
-        f=ChannelManger.get(i);
+        f = ChannelManger.get(ChannelManger.position);
         f.channel().writeAndFlush(JSONObject.toJSONString(request));
         f.channel().writeAndFlush("\r\n");
         DefaultFuture df = new DefaultFuture(request);
 
-        return df.get(i);
+        return df.get();
     }
 
 }
+

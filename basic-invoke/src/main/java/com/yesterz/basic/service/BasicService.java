@@ -16,7 +16,7 @@ public class BasicService {
         old6.setId(6);
         old6.setName("1个老6");
         Object response = userRemote.saveUser(old6);
-        System.out.println(JSONObject.toJSONString(response));
+        System.out.println("我是客户端，我收到服务器发来的数据，" + JSONObject.toJSONString(response));
     }
 
 }
