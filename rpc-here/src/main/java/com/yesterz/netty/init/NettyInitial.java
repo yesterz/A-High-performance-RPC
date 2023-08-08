@@ -71,6 +71,6 @@ public class NettyInitial implements ApplicationListener<ContextRefreshedEvent> 
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        this.start();
+        NettyInitial.start();
     }
 }
